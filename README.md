@@ -58,7 +58,7 @@ The Visual Studio Solution consists of two projects:
 
 ### PE Loader Project
 
-The key aspect of the PE loader is its handling of TLS. It implements a **TlsCallbackProxy** to forward TLS callbacks to the target executable. Additionally, the **PELoader::LoadPE** method performs some additional steps for TLS initialization. I recommend to have a closer look on of the following methods within the PE loader:
+The key aspect of the PE loader is its handling of TLS. It implements a **TlsCallbackProxy** to forward TLS callbacks to the target executable. Additionally, the **PELoader::LoadPE** method performs some additional steps for TLS initialization. I recommend to have a closer look on the following methods within the PE loader:
 
 - InitializeTlsIndex  
 - InitializeTlsData  
