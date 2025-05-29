@@ -19,7 +19,7 @@ Each loaded module (including the main module) that uses static TLS is assigned 
 
 #### TLS callbacks
 
-TLS callbacks are specified in the AddressOfCallBacks field of the PIMAGE_TLS_DIRECTORY structure. Each callback has the following the signature:
+TLS callbacks are stored in the AddressOfCallBacks field of the PIMAGE_TLS_DIRECTORY structure. Each callback has the following the signature:
 
 > void TlsCallback(PVOID hModule, DWORD dwReason, PVOID pContext)
 
