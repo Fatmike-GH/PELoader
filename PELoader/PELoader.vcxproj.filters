@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="PELoader\PEFile.cpp">
+      <Filter>PELoader</Filter>
+    </ClCompile>
+    <ClCompile Include="PELoader\PEImage.cpp">
+      <Filter>PELoader</Filter>
+    </ClCompile>
+    <ClCompile Include="PELoader\PELoader.cpp">
+      <Filter>PELoader</Filter>
+    </ClCompile>
+    <ClCompile Include="PELoader\TlsResolver.cpp">
+      <Filter>PELoader</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryFileReader\BinaryFileReader.cpp">
+      <Filter>BinaryFileReader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="PELoader">
+      <UniqueIdentifier>{7d1b868a-9a7a-46b8-b2be-48a010e72116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TlsCallbackProxy">
+      <UniqueIdentifier>{2430a118-cd77-4f36-8d8a-d25186281174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TypeDefs">
+      <UniqueIdentifier>{d02f8971-26fe-4739-899a-4f774a4a87d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BinaryFileReader">
+      <UniqueIdentifier>{13be36ee-e93b-4bd9-abe4-a4f7b71d272f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manifest">
+      <UniqueIdentifier>{39b8d1ff-d895-47a2-9baa-aa757f63fede}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PELoader\PEFile.h">
+      <Filter>PELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="PELoader\PEImage.h">
+      <Filter>PELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="PELoader\PELoader.h">
+      <Filter>PELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="PELoader\TlsResolver.h">
+      <Filter>PELoader</Filter>
+    </ClInclude>
+    <ClInclude Include="TlsCallbackProxy\TlsCallbackProxy.h">
+      <Filter>TlsCallbackProxy</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeDefs\peb.h">
+      <Filter>TypeDefs</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryFileReader\BinaryFileReader.h">
+      <Filter>BinaryFileReader</Filter>
+    </ClInclude>
+    <ClInclude Include="Manifest\manifest.h">
+      <Filter>Manifest</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

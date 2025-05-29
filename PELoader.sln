@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PELoader", "PELoader\PELoader.vcxproj", "{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TlsTarget", "TlsTarget\TlsTarget.vcxproj", "{E2001718-217B-42E4-B20A-73CCCB778F96}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Debug|x64.ActiveCfg = Debug|x64
+		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Debug|x64.Build.0 = Debug|x64
+		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Release|x64.ActiveCfg = Release|x64
+		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Release|x64.Build.0 = Release|x64
+		{E2001718-217B-42E4-B20A-73CCCB778F96}.Debug|x64.ActiveCfg = Debug|x64
+		{E2001718-217B-42E4-B20A-73CCCB778F96}.Debug|x64.Build.0 = Debug|x64
+		{E2001718-217B-42E4-B20A-73CCCB778F96}.Release|x64.ActiveCfg = Release|x64
+		{E2001718-217B-42E4-B20A-73CCCB778F96}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DD06E16A-C4EB-4B13-A1E2-7C326854651D}
+	EndGlobalSection
+EndGlobal
