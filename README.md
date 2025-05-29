@@ -62,9 +62,11 @@ The key aspect of the PE loader is its handling of TLS. It implements a **TlsCal
 
 - InitializeTlsIndex  
 - InitializeTlsData  
-- ExecuteTlsCallbacks  
+- ExecuteTlsCallbacks
   
-The InitializeTlsIndex method retrieves the TLS index from the PE loader itself, as this index has already been assigned by the Windows loader. Since the PE loader does not utilize TLS data directly and only needs a single TLS callback (**TlsCallbackProxy**), this TLS index can be reused directly for the target module.
+The InitializeTlsIndex method retrieves the TLS index from the PE loader itself, as this index has been assigned and initialized dynamically by the Windows loader. Since the PE loader does not directly utilize TLS data and only needs a single TLS callback (**TlsCallbackProxy**), this TLS index is reused for the target module. While I cannot guarantee that this approach is universally reliable, it has proven successful in loading a variety of target executables. Previously, I experimented with using TlsAlloc() and TlsFree(), but this approach was not successful.  
+
+As you can see in the UpdatePEB method, i do not set the field TlsIndex of the PLDR_DATA_TABLE_ENTRY structure to the actual TLS index. Although I initially implemented this, it caused unexpected behavior and was subsequently removed.
 
 ### TlsTarget Project
 
