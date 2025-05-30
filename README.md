@@ -73,6 +73,8 @@ As you can see in the ``UpdatePEB`` method, i do not set the field *TlsIndex* of
 ``Example.exe`` is a test executable that utilizes both TLS data and a TLS callback. It reads and modifies the TLS data across multiple threads and also updates it within the TLS callback itself.  
 If you wish, you can remove the ``TlsCallbackProxy`` by excluding the ``TlsCallbackProxy.h``header and attempt to load the executable with the PE loader. Additionally, you may experiment by removing one or more of the TLS-related methods (``InitializeTlsIndex``, ``InitializeTlsData``, ``ExecuteTlsCallbacks``) to observe how the behavior of ``Example.exe`` is affected.
 
+Note: Removing ``InitializeTlsIndex`` is not relevant when loading ``Example.exe`` since both, ``PELoader.exe`` and ``Example.exe`` have their TLS index set to 0. The method is still required, since Delphi binaries often have their TLS index set to -1 in the PE file.
+
 ## Limitations
 
 - Although the method I use to retrieve the TLS index for the main module is experimental and may not be universally reliable, it has still proven to work across a range of tested target executables, including MSVC Console and Windows applications, Rust Console and Windows builds, and Delphi binaries.
