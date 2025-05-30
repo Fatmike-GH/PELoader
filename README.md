@@ -70,8 +70,8 @@ As you can see in the ``UpdatePEB`` method, i do not set the field *TlsIndex* of
 
 ### Example Project
 
-Example.exe is a test executable that utilizes both TLS data and a TLS callback. It reads and modifies the TLS data across multiple threads and also updates it within the TLS callback itself.  
-If you wish, you can remove the ``TlsCallbackProxy`` by excluding the ``TlsCallbackProxy.h``header and attempt to load the executable with the PE loader. Additionally, you may experiment by removing one or more of the TLS-related methods (``InitializeTlsIndex``, ``InitializeTlsData``, ``ExecuteTlsCallbacks``) to observe how the behavior of TlsTarget is affected.
+``Example.exe`` is a test executable that utilizes both TLS data and a TLS callback. It reads and modifies the TLS data across multiple threads and also updates it within the TLS callback itself.  
+If you wish, you can remove the ``TlsCallbackProxy`` by excluding the ``TlsCallbackProxy.h``header and attempt to load the executable with the PE loader. Additionally, you may experiment by removing one or more of the TLS-related methods (``InitializeTlsIndex``, ``InitializeTlsData``, ``ExecuteTlsCallbacks``) to observe how the behavior of ``Example.exe`` is affected.
 
 ## Limitations
 
