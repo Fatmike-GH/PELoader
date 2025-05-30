@@ -44,7 +44,7 @@ The PE loader uses *LoadLibrary* to resolve imports. This approach allows TLS to
 - For each new thread (signaled by *DLL_THREAD_ATTACH*), including the main thread, TLS data memory must be allocated, the default TLS data copied, and the pointer set in the thread environment block (*TEB*) at the appropriate TLS index (*TEB->ThreadLocalStoragePointer*)
 - Upon thread termination (*DLL_THREAD_DETACH*), the TLS pointer in the *TEB* at the corresponding TLS index must be cleared (set to zero)
 - TLS callbacks for the main thread must be invoked with the *DLL_PROCESS_ATTACH* reason prior to transferring execution to the entry point (EP) of the target module. This represents the final initialization step before starting the main execution
-- TLS callbacks must also be called for new and terminating threads and processes, using the *DLL_THREAD_ATTACH* and *D*LL_THREAD_DETACH* reasons, respectively, as well as *DLL_PROCESS_ATTACH* and *DLL_PROCESS_DETACH*
+- TLS callbacks must also be called for new and terminating threads and processes, using the *DLL_THREAD_ATTACH* and *DLL_THREAD_DETACH* reasons, respectively, as well as *DLL_PROCESS_ATTACH* and *DLL_PROCESS_DETACH*
 
 ### How to handle *DLL_THREAD_ATTACH*, *DLL_THREAD_DETACH* and *DLL_PROCESS_DETACH*
 
