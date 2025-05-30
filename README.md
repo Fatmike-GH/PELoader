@@ -1,6 +1,6 @@
 # Fatmike's PE Loader
 
-A PE loader with full Thread Local Storage (TLS) support.  
+A PE loader for Windows with full Thread Local Storage (TLS) support.  
 Keywords: pe loader, pe loading, manual mapping, manual mapper, tls, thread local storage
 
 ## Introduction
