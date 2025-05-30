@@ -5,3 +5,4 @@
 /.vs
 /Example/Example.vcxproj.user
 /PELoader/PELoader.vcxproj.user
+/build
