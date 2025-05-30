@@ -75,9 +75,11 @@ If you wish, you can remove the ``TlsCallbackProxy`` by excluding the ``TlsCallb
 
 ## Limitations
 
+- Although the method I use to retrieve the TLS index for the main module is experimental and may not be universally reliable, it has nonetheless demonstrated consistent effectiveness across a range of tested target executables, including MSVC Console and Windows applications, Rust Console and Windows builds, and Delphi binaries.
+
 - The target executable requires a relocation table to ensure reliable loading, as the image base of the loader may conflict with that of the target. In a practical scenario, such as when the target is loaded from a memory section rather than from disk, this issue can be resolved by rebasing the PE loader to an unused image base and removing its relocation table.
 
 - Some executables have an embedded manifest that specifies required module versions. If such a manifest is necessary, it can be added to ``manifest.h`` within the PE loader. In a real-world scenario, when the PE loader loads the target executable from a memory section, the manifest should be extracted from the target executable and added to the PE loader as a resource.
 
-- Error handling is not fully implemented
+- Error handling is not fully implemented.
 
