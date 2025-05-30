@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PELoader", "PELoader\PELoader.vcxproj", "{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TlsTarget", "TlsTarget\TlsTarget.vcxproj", "{E2001718-217B-42E4-B20A-73CCCB778F96}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Example", "Example\Example.vcxproj", "{B4FBFFF6-C84A-4EA9-9F95-1B047BAD0500}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Debug|x64.Build.0 = Debug|x64
 		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Release|x64.ActiveCfg = Release|x64
 		{BCC5C1D0-D6EB-4206-B7E6-4F6CBBC56E9E}.Release|x64.Build.0 = Release|x64
-		{E2001718-217B-42E4-B20A-73CCCB778F96}.Debug|x64.ActiveCfg = Debug|x64
-		{E2001718-217B-42E4-B20A-73CCCB778F96}.Debug|x64.Build.0 = Debug|x64
-		{E2001718-217B-42E4-B20A-73CCCB778F96}.Release|x64.ActiveCfg = Release|x64
-		{E2001718-217B-42E4-B20A-73CCCB778F96}.Release|x64.Build.0 = Release|x64
+		{B4FBFFF6-C84A-4EA9-9F95-1B047BAD0500}.Debug|x64.ActiveCfg = Debug|x64
+		{B4FBFFF6-C84A-4EA9-9F95-1B047BAD0500}.Debug|x64.Build.0 = Debug|x64
+		{B4FBFFF6-C84A-4EA9-9F95-1B047BAD0500}.Release|x64.ActiveCfg = Release|x64
+		{B4FBFFF6-C84A-4EA9-9F95-1B047BAD0500}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

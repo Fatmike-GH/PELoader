@@ -40,7 +40,7 @@ void TlsCallbackProxy(PVOID hModule, DWORD dwReason, PVOID pContext)
 int main(int argc, char* argv[]) // Usage: Change Linker->System->Subsystem to Console
 {
   // Load PE from file
-  std::string file = "TlsTarget.exe";
+  std::string file = "Example.exe";
 
   BinaryFileReader* fileReader = new BinaryFileReader(file);
 
