@@ -83,5 +83,7 @@ Note: Removing ``InitializeTlsIndex`` is not relevant when loading ``Example.exe
 
 - Some executables have an embedded manifest that specifies required module versions. If such a manifest is necessary, it can be added to ``manifest.h`` within the PE loader. In a real-world scenario, when the PE loader loads the target executable from a memory section, the manifest should be extracted from the target executable and added to the PE loader as a resource.
 
+- No .NET support 
+
 - Error handling is not fully implemented.
 
