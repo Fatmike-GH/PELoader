@@ -2,7 +2,9 @@
 
 A PE loader for Windows with full Thread Local Storage (TLS) support.  
 
-Keywords: PE loader, PE loading, manual mapper, manual mapping, portable executable, thread local storage, TLS, EXE
+Keywords: PE loader, PE loading, manual mapper, manual mapping, portable executable, thread local storage, TLS, EXE  
+
+If you want to see how the PE Loader works in a pratical application you can also check out my PE Packer ``Fatpack`` here: https://github.com/Fatmike-GH/Fatpack
 
 ## Introduction
 
