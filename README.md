@@ -1,4 +1,4 @@
-# Fatmike's PE Loader
+# Fatmike's PE Loader (Manual Mapper)
 
 A PE loader for Windows with full Thread Local Storage (TLS) support.  
 
