@@ -12,7 +12,7 @@ PELoader::TlsResolver* _tlsResolver = nullptr;
 PELoader::PEImage* _peImage = nullptr;
 BOOL _entryPointCalled = FALSE;
 
-void TlsCallbackProxy(PVOID hModule, DWORD dwReason, PVOID pContext)
+void NTAPI TlsCallbackProxy(PVOID hModule, DWORD dwReason, PVOID pContext)
 {
   if (_entryPointCalled == FALSE) return;
 

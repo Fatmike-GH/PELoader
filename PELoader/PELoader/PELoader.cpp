@@ -57,9 +57,9 @@ namespace PELoader
     return imageBase;
   }
 
-  void PELoader::ApplyRelocations(PEImage* peImage, ULONGLONG originalImageBase)
+  void PELoader::ApplyRelocations(PEImage* peImage, uintptr_t originalImageBase)
   {
-    ULONGLONG baseDelta = (ULONGLONG)peImage->GetImageBase() - originalImageBase;
+    uintptr_t baseDelta = (uintptr_t)peImage->GetImageBase() - originalImageBase;
     if (baseDelta == 0) return;
 
     PIMAGE_DATA_DIRECTORY relocDir = &peImage->NT_HEADERS()->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_BASERELOC];
@@ -78,36 +78,38 @@ namespace PELoader
 
         switch (type)
         {
-        case IMAGE_REL_BASED_ABSOLUTE:
-          break;
+          case IMAGE_REL_BASED_ABSOLUTE:
+            break;
 
-        case IMAGE_REL_BASED_DIR64:
-        {
-          ULONGLONG* patchAddr = (ULONGLONG*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
-          *patchAddr += baseDelta;
-          break;
-        }
+          case IMAGE_REL_BASED_DIR64:
+          {
+            ULONGLONG* patchAddr = (ULONGLONG*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
+            *patchAddr += baseDelta;
+            break;
+          }
 
-        case IMAGE_REL_BASED_HIGHLOW:
-        {
-          DWORD* patchAddr = (DWORD*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
-          *patchAddr += (DWORD)baseDelta;
-          break;
-        }
+          case IMAGE_REL_BASED_HIGHLOW:
+          {
+            DWORD* patchAddr = (DWORD*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
+            *patchAddr += (DWORD)baseDelta;
+            break;
+          }
 
-        case IMAGE_REL_BASED_HIGH:
-        {
-          WORD* patchAddr = (WORD*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
-          *patchAddr += HIWORD((DWORD)baseDelta);
-          break;
-        }
+          case IMAGE_REL_BASED_HIGH:
+          {
+            WORD* patchAddr = (WORD*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
+            *patchAddr += HIWORD((DWORD)baseDelta);
+            break;
+          }
 
-        case IMAGE_REL_BASED_LOW:
-        {
-          WORD* patchAddr = (WORD*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
-          *patchAddr += LOWORD((DWORD)baseDelta);
-          break;
-        }
+          case IMAGE_REL_BASED_LOW:
+          {
+            WORD* patchAddr = (WORD*)((BYTE*)peImage->GetImageBase() + reloc->VirtualAddress + offset);
+            *patchAddr += LOWORD((DWORD)baseDelta);
+            break;
+          }
+          default:
+            break;
         }
       }
 
@@ -117,7 +119,8 @@ namespace PELoader
 
   void PELoader::UpdatePEB(PEImage* peImage)
   {
-    PEB* peb = (PEB*)__readgsqword(0x60); // Get PEB in x64
+    PTEB teb = NtCurrentTeb();
+    PEB* peb = teb->ProcessEnvironmentBlock;
 
     // Required to get specific APIs like GetModuleFileName work
     PLDR_DATA_TABLE_ENTRY entry = GetOwnLdrEntry(peb);
@@ -158,26 +161,26 @@ namespace PELoader
 
       while (origFirstThunk->u1.AddressOfData)
       {
-        FARPROC functionAddress = nullptr;
-        if (origFirstThunk->u1.Ordinal & IMAGE_ORDINAL_FLAG64)
+        uintptr_t procAddress = 0;
+        if (origFirstThunk->u1.Ordinal & IMAGE_ORDINAL_FLAG)
         {
           // Import by ordinal
           WORD ordinal = (WORD)(origFirstThunk->u1.Ordinal & 0xFFFF);
-          functionAddress = GetProcAddress(moduleHandle, (LPCSTR)(ULONG_PTR)ordinal);
+          procAddress = (uintptr_t)GetProcAddress(moduleHandle, (LPCSTR)(ULONG_PTR)ordinal);
         }
         else
         {
           // Import by name
           PIMAGE_IMPORT_BY_NAME importByName = (PIMAGE_IMPORT_BY_NAME)((BYTE*)peImage->GetImageBase() + origFirstThunk->u1.AddressOfData);
-          functionAddress = GetProcAddress(moduleHandle, importByName->Name);
+          procAddress = (uintptr_t)GetProcAddress(moduleHandle, importByName->Name);
         }
-        if (!functionAddress)
+        if (procAddress == 0)
         {
           // Error
           return;
         }
 
-        firstThunk->u1.Function = (ULONGLONG)functionAddress;
+        firstThunk->u1.Function = procAddress;
 
         origFirstThunk++;
         firstThunk++;
@@ -201,6 +204,7 @@ namespace PELoader
 
   void PELoader::SetupExceptionHandling(PEImage* peImage)
   {
+#ifdef _WIN64
     auto exceptionDir = peImage->NT_HEADERS()->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_EXCEPTION];
     if (exceptionDir.VirtualAddress == 0 || exceptionDir.Size == 0) return;
 
@@ -208,6 +212,7 @@ namespace PELoader
     DWORD count = exceptionDir.Size / sizeof(RUNTIME_FUNCTION);
 
     RtlAddFunctionTable(exceptionTable, count, reinterpret_cast<DWORD64>(peImage->GetImageBase()));
+#endif
   }
 
   void PELoader::ApplySectionMemoryProtection(PEImage* peImage)
@@ -277,46 +282,46 @@ namespace PELoader
     IMAGE_THUNK_DATA* iat = (IMAGE_THUNK_DATA*)(imageBase + delayDesc->ImportAddressTableRVA);
     IMAGE_THUNK_DATA* intt = (IMAGE_THUNK_DATA*)(imageBase + delayDesc->ImportNameTableRVA);
     IMAGE_THUNK_DATA* boundIat = (IMAGE_THUNK_DATA*)(imageBase + delayDesc->BoundImportAddressTableRVA);
-    IMAGE_THUNK_DATA* unloadIat = (IMAGE_THUNK_DATA*)(imageBase + delayDesc->UnloadInformationTableRVA);
+    IMAGE_THUNK_DATA* unloadIt = (IMAGE_THUNK_DATA*)(imageBase + delayDesc->UnloadInformationTableRVA);
 
     while (intt->u1.AddressOfData)
     {
-      FARPROC func = nullptr;
+      uintptr_t procAddress = 0;
 
-      if (intt->u1.Ordinal & IMAGE_ORDINAL_FLAG64)
+      if (intt->u1.Ordinal & IMAGE_ORDINAL_FLAG)
       {
         // Import by ordinal
         WORD ordinal = (WORD)(intt->u1.Ordinal & 0xFFFF);
-        func = GetProcAddress(moduleHandle, (LPCSTR)(ULONG_PTR)ordinal);
+        procAddress = (uintptr_t)GetProcAddress(moduleHandle, (LPCSTR)(ULONG_PTR)ordinal);
       }
       else
       {
         // Import by name
         const IMAGE_IMPORT_BY_NAME* importByName = (IMAGE_IMPORT_BY_NAME*)((BYTE*)peImage->GetImageBase() + intt->u1.AddressOfData);
-        func = GetProcAddress(moduleHandle, (LPCSTR)importByName->Name);
+        procAddress = (uintptr_t)GetProcAddress(moduleHandle, (LPCSTR)importByName->Name);
       }
 
-      if (!func)
+      if (procAddress == 0)
       {
         // Error
         return;
       }
 
       // Update IAT and optionally Bound IAT and Unload IAT
-      iat->u1.Function = (ULONGLONG)func;
+      iat->u1.Function = procAddress;
       if (delayDesc->BoundImportAddressTableRVA)
       {
-        boundIat->u1.Function = (ULONGLONG)func;
+        boundIat->u1.Function = procAddress;
       }
       if (delayDesc->UnloadInformationTableRVA)
       {
-        unloadIat->u1.Function = (ULONGLONG)func;
+        unloadIt->u1.Function = procAddress;
       }
 
       ++iat;
       ++intt;
       if (boundIat) ++boundIat;
-      if (unloadIat) ++unloadIat;
+      if (unloadIt) ++unloadIt;
     }
   }
 

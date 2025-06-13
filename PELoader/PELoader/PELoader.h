@@ -21,7 +21,7 @@ namespace PELoader
 
   private:
     LPVOID MapSections(PEFile* pefile);
-    void ApplyRelocations(PEImage* peImage, ULONGLONG originalImageBase);
+    void ApplyRelocations(PEImage* peImage, uintptr_t originalImageBase);
     void UpdatePEB(PEImage* peImage);
     void InitializeTlsIndex(TlsResolver* tlsResolver, PEImage* peImage);
     void InitializeTlsData(TlsResolver* tlsResolver, PEImage* peImage);

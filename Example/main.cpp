@@ -2,25 +2,36 @@
 #include <string>
 #include <iostream>
 
-void TlsCallback(PVOID hModule, DWORD dwReason, PVOID pContext);
+void NTAPI TlsCallback(PVOID hModule, DWORD dwReason, PVOID pContext);
 DWORD WINAPI ThreadFunction(LPVOID lpParam);
+
+#ifdef _WIN64
 
 #pragma comment (linker, "/INCLUDE:_tls_used")
 #pragma comment (linker, "/INCLUDE:tls_callback_func") 
 
 #pragma const_seg(".CRT$XLB")
-
-extern __declspec(thread) UINT64 _tlsVariable = 10;
 EXTERN_C const PIMAGE_TLS_CALLBACK tls_callback_func = (PIMAGE_TLS_CALLBACK)TlsCallback;
-
 #pragma const_seg()
+extern __declspec(thread) UINT64 _tlsVariable = 10;
+
+#else
+
+#pragma comment (linker, "/INCLUDE:__tls_used")
+#pragma comment (linker, "/INCLUDE:_tls_callback_func")
+
+#pragma data_seg(".CRT$XLB")
+EXTERN_C PIMAGE_TLS_CALLBACK tls_callback_func = (PIMAGE_TLS_CALLBACK)TlsCallback;
+#pragma data_seg()
+extern __declspec(thread) UINT64 _tlsVariable = 10;
+
+#endif
 
 //#define DLL_PROCESS_ATTACH   1    
 //#define DLL_THREAD_ATTACH    2    
 //#define DLL_THREAD_DETACH    3    
 //#define DLL_PROCESS_DETACH   0
-
-void TlsCallback(PVOID hModule, DWORD dwReason, PVOID pContext)
+void NTAPI TlsCallback(PVOID hModule, DWORD dwReason, PVOID pContext)
 {
   if (dwReason == DLL_PROCESS_ATTACH)
   {
