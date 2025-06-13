@@ -1,7 +1,10 @@
-# Fatmike's PE Loader
+# Fatmike's PE Loader (Manual Mapper)
 
-A PE loader with full Thread Local Storage (TLS) support.  
-Keywords: pe loader, pe loading, manual mapping, manual mapper, tls, thread local storage
+A PE loader for Windows with full Thread Local Storage (TLS) support.  
+
+Keywords: PE loader, PE loading, manual mapper, manual mapping, portable executable, thread local storage, TLS, EXE  
+
+If you want to see how the PE Loader works in a practical application you can also check out my PE Packer ``Fatpack`` here: https://github.com/Fatmike-GH/Fatpack
 
 ## Introduction
 
@@ -73,6 +76,8 @@ As you can see in the ``UpdatePEB`` method, i do not set the field *TlsIndex* of
 ``Example.exe`` is a test executable that utilizes both TLS data and a TLS callback. It reads and modifies the TLS data across multiple threads and also updates it within the TLS callback itself.  
 If you wish, you can remove the ``TlsCallbackProxy`` by excluding the ``TlsCallbackProxy.h``header and attempt to load the executable with the PE loader. Additionally, you may experiment by removing one or more of the TLS-related methods (``InitializeTlsIndex``, ``InitializeTlsData``, ``ExecuteTlsCallbacks``) to observe how the behavior of ``Example.exe`` is affected.
 
+Note: Removing ``InitializeTlsIndex`` is not relevant when loading ``Example.exe`` since both, ``PELoader.exe`` and ``Example.exe`` have their 'initial' TLS index set to 0. At the same time, Windows dynamically allocates 0 as TLS index for the PE loader, which 'randomly' matches the one of ``Example.exe``. The method is still required, since other executables, like Delphi binaries, often have their TLS index set to -1 in the pe file.
+
 ## Limitations
 
 - Although the method I use to retrieve the TLS index for the main module is experimental and may not be universally reliable, it has still proven to work across a range of tested target executables, including MSVC Console and Windows applications, Rust Console and Windows builds, and Delphi binaries.
@@ -80,6 +85,8 @@ If you wish, you can remove the ``TlsCallbackProxy`` by excluding the ``TlsCallb
 - The target executable requires a relocation table to ensure reliable loading, as the image base of the loader may conflict with that of the target. In a practical scenario, such as when the target is loaded from a memory section rather than from disk, this issue can be resolved by rebasing the PE loader to an unused image base and removing its relocation table.
 
 - Some executables have an embedded manifest that specifies required module versions. If such a manifest is necessary, it can be added to ``manifest.h`` within the PE loader. In a real-world scenario, when the PE loader loads the target executable from a memory section, the manifest should be extracted from the target executable and added to the PE loader as a resource.
+
+- No .NET support 
 
 - Error handling is not fully implemented.
 
