@@ -1,6 +1,6 @@
 # Fatmike's PE Loader (Manual Mapper)
 
-A Windows executable (PE) loader / manual mapper (x86 and x64) with full TLS (Thread Local Storage) support.  
+A Windows PE loader / manual mapper for executables (x86 and x64) with full TLS (Thread Local Storage) support.  
 
 Keywords: PE loader, PE loading, manual mapper, manual mapping, portable executable, thread local storage, TLS, EXE  
 
